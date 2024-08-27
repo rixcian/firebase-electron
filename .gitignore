@@ -1,2 +1,9 @@
 node_modules
 dist
+.env
+
+# JetBrains IDE cache files
+.idea/
+
+# VS Code IDE cache files
+.vscode/

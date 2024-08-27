@@ -1,13 +1,14 @@
 {
   "name": "firebase-electron",
   "version": "0.0.2",
-  "description": "Firebase notifications for Electron",
+  "description": "Receive a Firebase notifications in your Electron app",
   "keywords": [
     "firebase",
     "electron",
     "typescript",
     "fcm",
     "gcm",
+    "nodejs",
     "notifications"
   ],
   "homepage": "https://github.com/rixcian/firebase-electron",
@@ -28,7 +29,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rimraf dist && tsc",
-    "ci": "npm run build && npm run lint && npm run test",
+    "ci": "npm run build && npm run lint:fix && npm run test",
     "dev": "tsc --watch",
     "lint:fix": "prettier --write .",
     "lint": "prettier --check --ignore-unknown .",
@@ -41,9 +42,19 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.4",
     "@changesets/cli": "^2.27.7",
+    "@types/request-promise": "^4.1.51",
+    "@types/uuid": "^10.0.0",
+    "dotenv": "^16.4.5",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "http_ece": "^1.2.1",
+    "long": "^5.2.3",
+    "protobufjs": "^7.4.0",
+    "request-promise": "^4.2.6",
+    "uuid": "^10.0.0"
   }
 }
