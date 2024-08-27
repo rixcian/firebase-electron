@@ -28,11 +28,11 @@
   "license": "MIT",
   "scripts": {
     "build": "rimraf dist && tsc",
-    "ci": "npm run build && npm run check-format && npm run check-exports && npm run test",
+    "ci": "npm run build && npm run lint && npm run check:exports && npm run test",
     "dev": "tsc --watch",
     "lint:fix": "prettier --write .",
     "lint": "prettier --check --ignore-unknown .",
-    "check-exports": "attw --pack .",
+    "check:exports": "attw --pack .",
     "test": "vitest run",
     "test:watch": "vitest",
     "release": "changeset version && changeset publish",
