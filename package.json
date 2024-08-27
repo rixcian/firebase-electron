@@ -51,10 +51,14 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
+    "electron-store": "^10.0.0",
     "http_ece": "^1.2.1",
     "long": "^5.2.3",
     "protobufjs": "^7.4.0",
     "request-promise": "^4.2.6",
     "uuid": "^10.0.0"
+  },
+  "peerDependencies": {
+    "electron": "^30.0.0"
   }
 }

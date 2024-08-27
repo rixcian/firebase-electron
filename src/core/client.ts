@@ -48,7 +48,7 @@ export class Client extends EventEmitter {
     proto = await load(path.resolve(__dirname, 'utils', 'mcs.proto'));
   }
 
-  constructor(credentials: Credentials, persistentIds: string[] = []) {
+  constructor(credentials: Credentials, persistentIds: string[]) {
     super();
     this._credentials = credentials;
     this._persistentIds = persistentIds;

@@ -47,7 +47,7 @@ I'm giving all credits to [Matthieu Lemoine](https://github.com/MatthieuLemoine)
 
 - Uses the new FCM protocol ([HTTP v1 API](https://firebase.google.com/docs/cloud-messaging/migrate-v1))
 - Uses updated dependencies (without any critical vulnerabilities)
-- Remove unnecessary, deprecated and vulnerable dependencies (like `request-promise`)
+- Remove unnecessary, deprecated and vulnerable dependencies (e.g. `request-promise`, `electron-config`)
 - Simplified the codebase
 - Latest Node.js (v22)
 - Refactor tests and use [vitest](https://vitest.dev/) for testing

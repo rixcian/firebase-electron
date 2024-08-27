@@ -10,6 +10,6 @@ declare module 'http_ece' {
   function decrypt(buffer: Buffer, params: EceParams): Buffer;
 
   export = {
-    decrypt: decrypt
+    decrypt: decrypt,
   };
 }

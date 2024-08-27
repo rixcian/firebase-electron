@@ -8,11 +8,20 @@ export interface Notification {
   data: Record<string, string>;
 }
 
+export interface CredentialsWithPersistentIds extends Credentials {
+  persistentIds: string[];
+}
+
+export interface NotificationCallbackParams {
+  notification: Notification;
+  persistentId: string;
+}
+
 export async function listen(
-  credentials: Credentials,
-  notificationCallback: (notification: Notification) => void,
+  credentials: CredentialsWithPersistentIds,
+  notificationCallback: (params: NotificationCallbackParams) => void,
 ): Promise<Client> {
-  const client: Client = new Client(credentials);
+  const client: Client = new Client(credentials, credentials.persistentIds);
 
   // Listen for notifications
   client.on(EVENTS.ON_NOTIFICATION_RECEIVED, notificationCallback);

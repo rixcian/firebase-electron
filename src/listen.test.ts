@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { EVENTS } from './core/events.d.js';
-import { listen, Client, type Notification } from './core/listen.js';
+import { listen, Client, type Notification, type NotificationCallbackParams } from './core/listen.js';
 import { register, type RegisterCredentials } from './core/register.js';
 
 let credentials: RegisterCredentials | undefined;
@@ -12,7 +12,7 @@ async function receive(n: number) {
   const receivedNotifications: Notification[] = [];
 
   return new Promise(async (resolve) => {
-    const onNotification = (notification: Notification) => {
+    const onNotification = ({ notification }: NotificationCallbackParams) => {
       receivedNotifications.push(notification);
 
       if (receivedNotifications.length === n) {
@@ -21,7 +21,7 @@ async function receive(n: number) {
     };
 
     credentials!.persistentIds = [];
-    client = await listen(credentials!, onNotification);
+    client = await listen({ ...credentials!, persistentIds: [] }, onNotification);
   });
 }
 
@@ -36,7 +36,7 @@ describe('listen function', () => {
 
     const receivedNotifications: Notification[] = [];
 
-    const onNotification = (notification: Notification) => {
+    const onNotification = ({ notification }: NotificationCallbackParams) => {
       receivedNotifications.push(notification);
 
       if (receivedNotifications.length === 1) {
@@ -44,7 +44,7 @@ describe('listen function', () => {
       }
     };
 
-    client = await listen(credentials!, onNotification);
+    client = await listen({ ...credentials!, persistentIds: [] }, onNotification);
 
     client.on(EVENTS.ON_CLIENT_CONNECTED, () => {
       expect(0).toBe(0);
