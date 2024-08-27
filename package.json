@@ -1,6 +1,6 @@
 {
   "name": "firebase-electron",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Firebase notifications for Electron",
   "keywords": [
     "firebase",
@@ -35,7 +35,7 @@
     "check-exports": "attw --pack .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "local-release": "changeset version && changeset publish",
+    "release": "changeset version && changeset publish",
     "prepublishOnly": "npm run ci"
   },
   "devDependencies": {
