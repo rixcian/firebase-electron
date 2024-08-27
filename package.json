@@ -36,7 +36,6 @@
     "check:exports": "attw --pack .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prerelease": "npx changeset",
     "release": "changeset version && changeset publish",
     "prepublishOnly": "npm run ci"
   },
