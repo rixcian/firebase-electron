@@ -16,7 +16,8 @@
     "noImplicitOverride": true,
 
     /* If transpiling with TypeScript: */
-    "module": "Preserve",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "dist",
     "rootDir": "src",
     "sourceMap": true,

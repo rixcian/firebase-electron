@@ -22,16 +22,25 @@
   "files": [
     "dist"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "ci": "npm run build",
+    "build": "rimraf dist && tsc",
+    "ci": "npm run build && npm run check-format && npm run check-exports && npm run test",
     "dev": "tsc --watch",
-    "format": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "lint": "prettier --check --ignore-unknown .",
+    "check-exports": "attw --pack .",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.15.4",
     "prettier": "^3.3.3",
-    "typescript": "^5.5.4"
+    "rimraf": "^6.0.1",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
   }
 }
