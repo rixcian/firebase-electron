@@ -1,5 +1,13 @@
 # firebase-electron
 
+## 0.0.4
+
+### Patch Changes
+
+- c1eea1f: first implementation
+- b09a2e6: first implementation
+- b13501c: first implementation
+
 ## 0.0.2
 
 ### Patch Changes
