@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 0.0.6
+
+### Patch Changes
+
+- 4754146: add commonjs export
+
 ## 0.0.5
 
 ### Patch Changes
