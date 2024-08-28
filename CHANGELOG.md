@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 0.0.7
+
+### Patch Changes
+
+- 3519881: add proto files into dist
+
 ## 0.0.6
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "firebase-electron",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Receive a Firebase notifications in your Electron app",
   "keywords": [
     "firebase",
