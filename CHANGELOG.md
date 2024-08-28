@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 0.0.5
+
+### Patch Changes
+
+- 425da7b: try to move cjs deps into devDeps
+
 ## 0.0.4
 
 ### Patch Changes
