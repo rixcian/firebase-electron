@@ -11,6 +11,7 @@ npm i firebase-electron
 ## Usage
 
 ### In the main process (`main.js/.ts`)
+
 ```typescript
 import { setup: setupPushReceiver } from 'firebase-electron';
 

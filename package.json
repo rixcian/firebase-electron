@@ -1,6 +1,6 @@
 {
   "name": "firebase-electron",
-  "version": "0.0.5",
+  "version": "0.0.4",
   "description": "Receive a Firebase notifications in your Electron app",
   "keywords": [
     "firebase",
@@ -49,14 +49,14 @@
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "typescript": "^5.5.4",
-    "vitest": "^2.0.5",
-    "http_ece": "^1.2.1",
-    "request-promise": "^4.2.6"
+    "vitest": "^2.0.5"
   },
   "dependencies": {
     "electron-store": "^10.0.0",
+    "http_ece": "^1.2.1",
     "long": "^5.2.3",
     "protobufjs": "^7.4.0",
+    "request-promise": "^4.2.6",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
