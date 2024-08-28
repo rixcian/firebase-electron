@@ -28,8 +28,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist && tsup",
-    "ci": "npm run build && npm run lint:fix && npm run test",
+    "build": "rimraf dist && tsup && node afterBuild.js",
+    "ci": "npm run build && node afterBuild.js && npm run lint:fix && npm run test",
     "dev": "tsc --watch",
     "lint:fix": "tsc && prettier --write .",
     "lint": "tsc && prettier --check --ignore-unknown .",
