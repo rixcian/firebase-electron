@@ -9,6 +9,7 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "noEmit": true,
 
     /* Strictness */
     "strict": true,
@@ -16,17 +17,17 @@
     "noImplicitOverride": true,
 
     /* If transpiling with TypeScript: */
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "outDir": "dist",
-    "rootDir": "src",
-    "sourceMap": true,
+    "module": "Preserve",
+    //    "moduleResolution": "NodeNext",
+    //    "outDir": "dist",
+    //    "rootDir": "src",
+    //    "sourceMap": true,
 
     /* AND if you're building for a library: */
-    "declaration": true,
+    //    "declaration": true,
 
     /* AND if you're building for a library in a monorepo: */
-    "declarationMap": true,
+    //    "declarationMap": true,
 
     /* Use ES2022 library definitions */
     "lib": ["ES2022"]

@@ -1,5 +1,5 @@
 import { ipcMain, type WebContents } from 'electron';
-import ElectronStore from 'electron-store';
+import ElectronStore from 'electron-config';
 
 import { listen } from '../core/listen.js';
 import { register, type FirebaseCredentials } from '../core/register.js';
