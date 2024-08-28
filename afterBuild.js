@@ -29,6 +29,18 @@ function copyProtoFiles(sourceDir, targetDir) {
     // Copy each .proto file to the target directory
     for (const sourcePath of protoFiles) {
         const fileName = path.basename(sourcePath);
+
+        // Copy mcs.proto to utils
+        if (fileName === "mcs.proto") {
+            const utilsDir = path.join(targetDir, 'utils');
+            if (!fs.existsSync(utilsDir)) {
+                fs.mkdirSync(utilsDir, { recursive: true });
+            }
+            const targetPath = path.join(utilsDir, fileName);
+            fs.copyFileSync(sourcePath, targetPath);
+            console.log(`Copied: ${sourcePath} -> ${targetPath}`);
+        }
+
         const targetPath = path.join(targetDir, fileName);
         fs.copyFileSync(sourcePath, targetPath);
         console.log(`Copied: ${sourcePath} -> ${targetPath}`);
