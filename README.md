@@ -5,20 +5,41 @@ Receive Firebase push notifications in your Electron app.
 ## Installation
 
 ```bash
-npm install firebase-electron
+npm i firebase-electron
 ```
 
 ## Usage
 
+### In the main process (`main.js/.ts`)
 ```typescript
-import { FCMClient } from 'firebase-electron';
+import { setup: setupPushReceiver } from 'firebase-electron';
 
-const fcmClient = new FCMClient({
-  appId: 'your-app-id',
-  apiKey: 'your-api-key',
-  projectId: 'your-project-id',
-  vapidKey: 'your-vapid-key', // optional
-});
+// Call it before 'did-finish-load' with mainWindow a reference to your window
+setupPushReceiver(mainWindow.webContents);
+```
+
+### In the renderer process (`renderer.js/.ts`)
+
+```typescript
+import { ipcRenderer } from 'electron';
+import {
+  START_NOTIFICATION_SERVICE,
+  NOTIFICATION_SERVICE_STARTED,
+  NOTIFICATION_SERVICE_ERROR,
+  NOTIFICATION_RECEIVED as ON_NOTIFICATION_RECEIVED,
+  TOKEN_UPDATED,
+} from 'firebase-electron';
+
+// Listen for service successfully started
+ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => // do something);
+// Handle notification errors
+ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => // do something);
+// Send FCM token to backend
+ipcRenderer.on(TOKEN_UPDATED, (_, token) => // Send token);
+// Display notification
+ipcRenderer.on(ON_NOTIFICATION_RECEIVED, (_, notification) => // display notification);
+// Start service
+ipcRenderer.send(START_NOTIFICATION_SERVICE, { appId, apiKey, projectId, vapidKey });
 ```
 
 ### Where to find `appId`, `apiKey`, `projectId` and `vapidKey`
@@ -57,29 +78,6 @@ I'm giving all credits to [Matthieu Lemoine](https://github.com/MatthieuLemoine)
 > Breaking changes - Instead of providing just a `senderId`, you now must provide `appId`, `apiKey`, `projectId` and optionally a `vapidKey`. See the updated [usage example](#usage).
 >
 > > Google deprecated https://fcm.googleapis.com/fcm/connect/subscribe (/send too), which is slated for full removal on June 22, 2024. (Source: https://firebase.google.com/docs/cloud-messaging/migrate-v1)
-
-### Before (electron-push-receiver)
-
-```typescript
-import { FCMClient } from 'electron-push-receiver';
-
-const fcmClient = new FCMClient({
-  senderId: 'your-sender-id',
-});
-```
-
-### After (firebase-electron)
-
-```typescript
-import { FCMClient } from 'firebase-electron';
-
-const fcmClient = new FCMClient({
-  appId: 'your-app-id',
-  apiKey: 'your-api-key',
-  projectId: 'your-project-id',
-  vapidKey: 'your-vapid-key', // optional
-});
-```
 
 ## Development
 
