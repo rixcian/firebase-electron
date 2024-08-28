@@ -54,7 +54,9 @@ ipcRenderer.send(START_NOTIFICATION_SERVICE, { appId, apiKey, projectId, vapidKe
    - Select `Web`
    - Fill in the required fields
    - Click on `Register`
-8. Copy the `appId`, `apiKey`, `projectId`, and `vapidKey` listed under the `SDK setup and configuration` section
+8. Copy the `appId`, `apiKey`, `projectId` listed under the `SDK setup and configuration` section
+9. (Optional) Copy the `vapidKey` listed under the `Cloud Messaging` tab and `Web Configuration > Web Push certificates` section
+10. (Optional) Generate a new `key pair` and use the value in the `Key pair` column as your `vapidKey`
 
 ## Moving from `electron-push-receiver`
 
