@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 import path from 'path';
-import { load, BufferReader, Root } from 'protobufjs';
+import protobuf from 'protobufjs';
 import {
   ProcessingState,
   kVersionPacketLen,
@@ -13,7 +13,7 @@ import {
 const DEBUG_ENABLED = false;
 const DEBUG = DEBUG_ENABLED ? console.log : (log: string): void => {};
 
-let proto: Root | null = null;
+let proto: protobuf.Root | null = null;
 
 // Parser parses wire data from gcm.
 // This takes the role of WaitForData in the chromium connection handler.
@@ -39,7 +39,7 @@ export default class Parser extends EventEmitter {
     if (proto) {
       return;
     }
-    proto = await load(path.resolve(__dirname, 'mcs.proto'));
+    proto = await protobuf.load(path.resolve(__dirname, 'mcs.proto'));
   }
 
   constructor(socket: any) {
@@ -149,7 +149,7 @@ export default class Parser extends EventEmitter {
 
   private _onGotMessageSize(): void {
     let incompleteSizePacket = false;
-    const reader = new BufferReader(this._data);
+    const reader = new protobuf.BufferReader(this._data);
 
     try {
       this._messageSize = reader.int32();
