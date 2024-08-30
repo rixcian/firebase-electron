@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 0.0.10
+
+### Patch Changes
+
+- 2b37e69: update exports
+
 ## 0.0.9
 
 ### Patch Changes
