@@ -33,7 +33,19 @@ export interface Message {
   persistentId: string;
 }
 
+export interface ClientCredentials {
+  gcm: {
+    androidId: string;
+    securityToken: string;
+  };
+  keys: {
+    privateKey: string;
+    authSecret: string;
+  };
+}
+
 export class Client extends EventEmitter {
+  private _tcpSocket: net.Socket | null;
   private _credentials: Credentials;
   private _persistentIds: string[];
   private _retryCount: number;
@@ -48,11 +60,12 @@ export class Client extends EventEmitter {
     proto = await load(path.resolve(__dirname, 'utils', 'mcs.proto'));
   }
 
-  constructor(credentials: Credentials, persistentIds: string[]) {
+  constructor(credentials: ClientCredentials, persistentIds: string[]) {
     super();
     this._credentials = credentials;
     this._persistentIds = persistentIds;
     this._retryCount = 0;
+    this._tcpSocket = null;
     this._socket = null;
     this._parser = null;
     this._retryTimeout = null;
@@ -91,7 +104,8 @@ export class Client extends EventEmitter {
   }
 
   private _connect(): void {
-    this._socket = new tls.TLSSocket(new net.Socket());
+    // @ts-ignore
+    this._socket = new tls.TLSSocket();
     this._socket.setKeepAlive(true);
     this._socket.on('connect', this._onSocketConnect);
     this._socket.on('close', this._onSocketClose);
@@ -164,9 +178,11 @@ export class Client extends EventEmitter {
 
   private _onSocketError = (error: Error): void => {
     // ignore, the close handler takes care of retry
+    console.error('Socket error', error);
   };
 
   private _onParserError = (error: Error): void => {
+    console.error('Parser error', error);
     this._retry();
   };
 
@@ -177,16 +193,21 @@ export class Client extends EventEmitter {
   }
 
   private _onMessage = ({ tag, object }: { tag: number; object: any }): void => {
+    console.log('Message', tag, object);
     if (tag === MCSProtoTag.kLoginResponseTag) {
       // clear persistent ids, as we just sent them to the server while logging
       // in
       this._persistentIds = [];
     } else if (tag === MCSProtoTag.kDataMessageStanzaTag) {
+      console.log('calling _onDataMessage');
       this._onDataMessage(object);
     }
+
+    console.log('the message tag was not handled', tag);
   };
 
   private _onDataMessage(object: any): void {
+    console.log('Data message', object);
     if (this._persistentIds.includes(object.persistentId)) {
       return;
     }

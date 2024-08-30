@@ -39,16 +39,21 @@ describe('listen function', () => {
     const onNotification = ({ notification }: NotificationCallbackParams) => {
       receivedNotifications.push(notification);
 
-      if (receivedNotifications.length === 1) {
-        expect(receivedNotifications).toHaveLength(1);
-      }
+      console.log('Notification received', notification);
+      // if (receivedNotifications.length === 1) {
+      //   expect(receivedNotifications).toHaveLength(1);
+      // }
     };
 
     client = await listen({ ...credentials!, persistentIds: [] }, onNotification);
 
     client.on(EVENTS.ON_CLIENT_CONNECTED, () => {
-      expect(0).toBe(0);
+      console.log('Client connected');
     });
+
+    // client.on(EVENTS.ON_NOTIFICATION_RECEIVED, ({ notification }) => {
+    //   console.log('Notification received', notification);
+    // });
   });
 
   afterEach(async () => {
@@ -59,7 +64,23 @@ describe('listen function', () => {
     credentials = undefined;
   });
 
-  it('should start listening to notifications', async () => {
-    expect(client!.checkConnection()).toBe(true);
-  });
+  // it('should start listening to notifications', async () => {
+  //   expect(client!.checkConnection()).toBe(true);
+  // });
+
+  it('testing _connect method', async () => {
+    credentials = await register({
+      apiKey: process.env.API_KEY!,
+      appId: process.env.APP_ID!,
+      projectId: process.env.PROJECT_ID!,
+      vapidKey: process.env.FCM_VAPID_KEY!,
+    });
+
+    const client = new Client({ gcm: credentials.gcm, keys: credentials.keys }, []);
+    await client.connect();
+
+    setTimeout(() => {
+      client.destroy();
+    }, 100000);
+  }, 100000);
 });

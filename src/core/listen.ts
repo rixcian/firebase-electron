@@ -21,7 +21,7 @@ export async function listen(
   credentials: CredentialsWithPersistentIds,
   notificationCallback: (params: NotificationCallbackParams) => void,
 ): Promise<Client> {
-  const client: Client = new Client(credentials, credentials.persistentIds);
+  const client: Client = new Client({ gcm: credentials.gcm, keys: credentials.keys }, credentials.persistentIds);
 
   // Listen for notifications
   client.on(EVENTS.ON_NOTIFICATION_RECEIVED, notificationCallback);
