@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 1.0.1
+
+### Patch Changes
+
+- 5523c2c: add missing 'request' dependency
+
 ## 1.0.0
 
 ### Major Changes
