@@ -42,7 +42,10 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./consts": "./dist/electron/consts.js",
+    "./consts": {
+      "import": "./dist/electron/consts.js",
+      "default": "./dist/electron/consts.cjs"
+    },
     ".": {
       "import": "./dist/index.js",
       "default": "./dist/index.cjs"
