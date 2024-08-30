@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { EVENTS } from './core/events.d.js';
 import { listen, Client, type Notification, type NotificationCallbackParams } from './core/listen.js';
 import { register, type RegisterCredentials } from './core/register.js';
 
@@ -46,14 +45,6 @@ describe('listen function', () => {
     };
 
     client = await listen({ ...credentials!, persistentIds: [] }, onNotification);
-
-    client.on(EVENTS.ON_CLIENT_CONNECTED, () => {
-      console.log('Client connected');
-    });
-
-    // client.on(EVENTS.ON_NOTIFICATION_RECEIVED, ({ notification }) => {
-    //   console.log('Notification received', notification);
-    // });
   });
 
   afterEach(async () => {
@@ -64,23 +55,7 @@ describe('listen function', () => {
     credentials = undefined;
   });
 
-  // it('should start listening to notifications', async () => {
-  //   expect(client!.checkConnection()).toBe(true);
-  // });
-
-  it('testing _connect method', async () => {
-    credentials = await register({
-      apiKey: process.env.API_KEY!,
-      appId: process.env.APP_ID!,
-      projectId: process.env.PROJECT_ID!,
-      vapidKey: process.env.FCM_VAPID_KEY!,
-    });
-
-    const client = new Client({ gcm: credentials.gcm, keys: credentials.keys }, []);
-    await client.connect();
-
-    setTimeout(() => {
-      client.destroy();
-    }, 100000);
-  }, 100000);
+  it('should start listening to notifications', async () => {
+    expect(client!.checkConnection()).toBe(true);
+  });
 });
