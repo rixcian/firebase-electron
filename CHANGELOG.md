@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 0.0.9
+
+### Patch Changes
+
+- b256b7c: add consts to export
+
 ## 0.0.8
 
 ### Patch Changes
