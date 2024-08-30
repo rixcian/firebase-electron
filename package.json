@@ -69,6 +69,7 @@
     "http_ece": "^1.2.1",
     "long": "^5.2.3",
     "protobufjs": "^7.4.0",
+    "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "uuid": "^10.0.0"
   },
