@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 0.0.11
+
+### Patch Changes
+
+- 0704b58: fix exports and logs
+
 ## 0.0.10
 
 ### Patch Changes
