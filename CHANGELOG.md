@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 1.0.0
+
+### Major Changes
+
+- 11d8254: first major release
+
 ## 0.0.11
 
 ### Patch Changes
