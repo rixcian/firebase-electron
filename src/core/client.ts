@@ -193,21 +193,16 @@ export class Client extends EventEmitter {
   }
 
   private _onMessage = ({ tag, object }: { tag: number; object: any }): void => {
-    console.log('Message', tag, object);
     if (tag === MCSProtoTag.kLoginResponseTag) {
       // clear persistent ids, as we just sent them to the server while logging
       // in
       this._persistentIds = [];
     } else if (tag === MCSProtoTag.kDataMessageStanzaTag) {
-      console.log('calling _onDataMessage');
       this._onDataMessage(object);
     }
-
-    console.log('the message tag was not handled', tag);
   };
 
   private _onDataMessage(object: any): void {
-    console.log('Data message', object);
     if (this._persistentIds.includes(object.persistentId)) {
       return;
     }
