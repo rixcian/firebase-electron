@@ -3,7 +3,7 @@ import Long from 'long';
 import path from 'path';
 import tls from 'tls';
 import net from 'net';
-import { load, Root } from 'protobufjs';
+import protobuf from 'protobufjs';
 
 import { EVENTS } from './events.d.js';
 import { checkIn, type CheckInOptions } from './gcm/index.js';
@@ -15,7 +15,7 @@ const HOST = 'mtalk.google.com';
 const PORT = 5228;
 const MAX_RETRY_TIMEOUT = 15;
 
-let proto: Root | null = null;
+let proto: protobuf.Root | null = null;
 
 export interface Credentials {
   gcm: {
@@ -57,7 +57,7 @@ export class Client extends EventEmitter {
     if (proto) {
       return;
     }
-    proto = await load(path.resolve(__dirname, 'utils', 'mcs.proto'));
+    proto = await protobuf.load(path.resolve(__dirname, 'utils', 'mcs.proto'));
   }
 
   constructor(credentials: ClientCredentials, persistentIds: string[]) {
