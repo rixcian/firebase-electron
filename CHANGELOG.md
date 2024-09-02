@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 1.0.2
+
+### Patch Changes
+
+- 53d54f3: resolve the error caused by named import
+
 ## 1.0.1
 
 ### Patch Changes
