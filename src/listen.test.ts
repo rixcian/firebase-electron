@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { EVENTS } from './core/events.d.js';
 import { listen, Client, type Notification, type NotificationCallbackParams } from './core/listen.js';
 import { register, type RegisterCredentials } from './core/register.js';
 
@@ -39,16 +38,13 @@ describe('listen function', () => {
     const onNotification = ({ notification }: NotificationCallbackParams) => {
       receivedNotifications.push(notification);
 
-      if (receivedNotifications.length === 1) {
-        expect(receivedNotifications).toHaveLength(1);
-      }
+      console.log('Notification received', notification);
+      // if (receivedNotifications.length === 1) {
+      //   expect(receivedNotifications).toHaveLength(1);
+      // }
     };
 
     client = await listen({ ...credentials!, persistentIds: [] }, onNotification);
-
-    client.on(EVENTS.ON_CLIENT_CONNECTED, () => {
-      expect(0).toBe(0);
-    });
   });
 
   afterEach(async () => {

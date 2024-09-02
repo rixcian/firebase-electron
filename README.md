@@ -10,6 +10,8 @@ npm i firebase-electron
 
 ## Usage
 
+Usage is similar to the [`electron-push-receiver`](https://github.com/MatthieuLemoine/electron-push-receiver) package.
+
 ### In the main process (`main.js/.ts`)
 
 ```typescript
@@ -27,20 +29,30 @@ import {
   START_NOTIFICATION_SERVICE,
   NOTIFICATION_SERVICE_STARTED,
   NOTIFICATION_SERVICE_ERROR,
-  NOTIFICATION_RECEIVED as ON_NOTIFICATION_RECEIVED,
+  NOTIFICATION_RECEIVED,
   TOKEN_UPDATED,
-} from 'firebase-electron';
+} from 'firebase-electron/dist/electron/consts';
 
 // Listen for service successfully started
-ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => // do something);
+ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
+  // do something
+});
 // Handle notification errors
-ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => // do something);
+ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
+  // do something
+});
 // Send FCM token to backend
-ipcRenderer.on(TOKEN_UPDATED, (_, token) => // Send token);
+ipcRenderer.on(TOKEN_UPDATED, (_, token) => {
+  // Send token
+});
 // Display notification
-ipcRenderer.on(ON_NOTIFICATION_RECEIVED, (_, notification) => // display notification);
+ipcRenderer.on(NOTIFICATION_RECEIVED, (_, notification) => {
+  // display notification
+});
 // Start service
 ipcRenderer.send(START_NOTIFICATION_SERVICE, { appId, apiKey, projectId, vapidKey });
+// or
+window.ipc.send(START_NOTIFICATION_SERVICE, { appId, apiKey, projectId, vapidKey });
 ```
 
 ### Where to find `appId`, `apiKey`, `projectId` and `vapidKey`

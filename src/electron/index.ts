@@ -10,7 +10,7 @@ import {
   NOTIFICATION_SERVICE_STARTED,
   START_NOTIFICATION_SERVICE,
   TOKEN_UPDATED,
-} from './constants.js';
+} from './consts.js';
 
 const config = new ElectronStore();
 

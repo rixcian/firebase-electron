@@ -7,4 +7,4 @@ export {
   NOTIFICATION_SERVICE_ERROR,
   NOTIFICATION_RECEIVED,
   TOKEN_UPDATED,
-} from './electron/constants.js';
+} from './electron/consts.js';

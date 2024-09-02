@@ -1,5 +1,47 @@
 # firebase-electron
 
+## 1.0.1
+
+### Patch Changes
+
+- 5523c2c: add missing 'request' dependency
+
+## 1.0.0
+
+### Major Changes
+
+- 11d8254: first major release
+
+## 0.0.11
+
+### Patch Changes
+
+- 0704b58: fix exports and logs
+
+## 0.0.10
+
+### Patch Changes
+
+- 2b37e69: update exports
+
+## 0.0.9
+
+### Patch Changes
+
+- b256b7c: add consts to export
+
+## 0.0.8
+
+### Patch Changes
+
+- d9d6ece: update build process
+
+## 0.0.7
+
+### Patch Changes
+
+- 3519881: add proto files into dist
+
 ## 0.0.6
 
 ### Patch Changes
