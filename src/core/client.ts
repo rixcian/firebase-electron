@@ -13,7 +13,7 @@ import Parser from './utils/parser.js';
 
 const HOST = 'mtalk.google.com';
 const PORT = 5228;
-const MAX_RETRY_TIMEOUT = 15;
+const RETRY_INTERVAL = 5000;
 
 let proto: protobuf.Root | null = null;
 
@@ -48,10 +48,9 @@ export class Client extends EventEmitter {
   private _tcpSocket: net.Socket | null;
   private _credentials: Credentials;
   private _persistentIds: string[];
-  private _retryCount: number;
   private _socket: tls.TLSSocket | null;
   private _parser: Parser | null;
-  private _retryTimeout: NodeJS.Timeout | null;
+  private _retryInterval: NodeJS.Timeout | null;
 
   static async init(): Promise<void> {
     if (proto) {
@@ -64,11 +63,10 @@ export class Client extends EventEmitter {
     super();
     this._credentials = credentials;
     this._persistentIds = persistentIds;
-    this._retryCount = 0;
     this._tcpSocket = null;
     this._socket = null;
     this._parser = null;
-    this._retryTimeout = null;
+    this._retryInterval = null;
   }
 
   async connect(): Promise<void> {
@@ -115,8 +113,8 @@ export class Client extends EventEmitter {
   }
 
   private _destroy(): void {
-    if (this._retryTimeout) {
-      clearTimeout(this._retryTimeout);
+    if (this._retryInterval) {
+      clearInterval(this._retryInterval);
     }
     if (this._socket) {
       this._socket.removeListener('connect', this._onSocketConnect);
@@ -167,7 +165,10 @@ export class Client extends EventEmitter {
   }
 
   private _onSocketConnect = (): void => {
-    this._retryCount = 0;
+    if (this._retryInterval) {
+      clearInterval(this._retryInterval);
+      this._retryInterval = null;
+    }
     this.emit('connect');
   };
 
@@ -188,8 +189,10 @@ export class Client extends EventEmitter {
 
   private _retry(): void {
     this._destroy();
-    const timeout = Math.min(++this._retryCount, MAX_RETRY_TIMEOUT) * 1000;
-    this._retryTimeout = setTimeout(() => this.connect(), timeout);
+    this._retryInterval = setInterval(() => {
+      console.log('trying to reconnect to mtalk.google.com...');
+      this.connect();
+    }, RETRY_INTERVAL);
   }
 
   private _onMessage = ({ tag, object }: { tag: number; object: any }): void => {
