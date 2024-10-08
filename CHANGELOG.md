@@ -1,5 +1,11 @@
 # firebase-electron
 
+## 1.1.0
+
+### Minor Changes
+
+- 48d4f03: fixing connection errors when no there's no connection to the Internet
+
 ## 1.0.2
 
 ### Patch Changes
