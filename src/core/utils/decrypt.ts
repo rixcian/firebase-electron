@@ -21,11 +21,12 @@ export function decrypt(object: DecryptObject, keys: DecryptKeys): any {
 
   const dh = crypto.createECDH('prime256v1');
   dh.setPrivateKey(keys.privateKey, 'base64');
-
+  const cryptoKeyMatch = cryptoKey.value.match(/dh=([^;]+)/);
+  if (!cryptoKeyMatch) throw new Error('dh parameter is missing from crypto-key');
   const params = {
     version: 'aesgcm',
     authSecret: keys.authSecret,
-    dh: cryptoKey.value.slice(3),
+    dh: cryptoKeyMatch[1],
     privateKey: dh,
     salt: salt.value.slice(5),
   };
