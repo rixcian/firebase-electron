@@ -1,7 +1,7 @@
 import Long from 'long';
 import path from 'path';
 import protobuf from 'protobufjs';
-import request from 'request-promise';
+import axios from 'axios';
 
 import fcmKey from '../fcm/server-key.js';
 import { toBase64 } from '../utils/base64.js';
@@ -42,15 +42,13 @@ export async function checkIn(androidId?: string, securityToken?: string): Promi
 
   const buffer = getCheckinRequest(androidId, securityToken);
 
-  const body = await request({
-    url: CHECKIN_URL,
-    method: 'POST',
+  const response = await axios.post<ArrayBuffer>(CHECKIN_URL, buffer, {
     headers: {
       'Content-Type': 'application/x-protobuf',
     },
-    body: buffer,
-    encoding: null,
+    responseType: 'arraybuffer',
   });
+  const body = new Uint8Array(response.data);
 
   const message = AndroidCheckinResponse.decode(body);
 
@@ -90,18 +88,17 @@ interface PostRegisterOptions {
 }
 
 async function postRegister({ androidId, securityToken, body, retry = 0 }: PostRegisterOptions): Promise<string> {
-  const response = await request({
-    url: REGISTER_URL,
-    method: 'POST',
+  const response = await axios.post<string>(REGISTER_URL, new URLSearchParams(body).toString(), {
     headers: {
       Authorization: `AidLogin ${androidId}:${securityToken}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    form: body,
+    responseType: 'text',
   });
+  const responseBody = response.data;
 
-  if (response.includes('Error')) {
-    console.warn(`GCM register request has failed with ${response}`);
+  if (responseBody.includes('Error')) {
+    console.warn(`GCM register request has failed with ${responseBody}`);
     if (retry >= 10) throw new Error('GCM register has failed');
 
     console.warn(`Retry... ${retry + 1}`);
@@ -111,7 +108,7 @@ async function postRegister({ androidId, securityToken, body, retry = 0 }: PostR
     return postRegister({ androidId, securityToken, body, retry: retry + 1 });
   }
 
-  return response;
+  return responseBody;
 }
 
 async function loadProtoFile(): Promise<void> {
