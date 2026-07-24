@@ -102,13 +102,17 @@ export class Client extends EventEmitter {
   }
 
   private _connect(): void {
-    // @ts-ignore
-    this._socket = new tls.TLSSocket();
+    // Use tls.connect() instead of `new tls.TLSSocket()` so the TLS handshake
+    // includes SNI (servername). Without SNI, Google responds with a
+    // placeholder certificate ("No SNI provided - please fix your client",
+    // CN=invalid2.invalid) and, more importantly, corporate DPI firewalls
+    // commonly reset SNI-less TLS connections right after the ClientHello,
+    // which silently breaks push delivery on such networks.
+    this._socket = tls.connect({ host: HOST, port: PORT, servername: HOST });
     this._socket.setKeepAlive(true);
     this._socket.on('connect', this._onSocketConnect);
     this._socket.on('close', this._onSocketClose);
     this._socket.on('error', this._onSocketError);
-    this._socket.connect({ host: HOST, port: PORT });
     this._socket.write(this._loginBuffer());
   }
 
