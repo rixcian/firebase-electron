@@ -94,6 +94,12 @@ I'm giving all credits to [Matthieu Lemoine](https://github.com/MatthieuLemoine)
 >
 > > Google deprecated https://fcm.googleapis.com/fcm/connect/subscribe (/send too), which is slated for full removal on June 22, 2024. (Source: https://firebase.google.com/docs/cloud-messaging/migrate-v1)
 
+## Troubleshooting
+
+### `Error=PHONE_REGISTRATION_ERROR`
+
+Google's GCM check-in/register flow can return this transiently right after a new `android_id` is created. The library retries with exponential backoff and periodic re-check-in. If it still fails after several attempts, wait a few seconds and call `register()` again (or send `RESET_NOTIFICATION_SERVICE` then restart the Electron notification service).
+
 ## Development
 
 1. Make sure you have the right Node.js version installed (specified in `.nvmrc` file)
