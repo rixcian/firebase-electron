@@ -94,6 +94,43 @@ I'm giving all credits to [Matthieu Lemoine](https://github.com/MatthieuLemoine)
 >
 > > Google deprecated https://fcm.googleapis.com/fcm/connect/subscribe (/send too), which is slated for full removal on June 22, 2024. (Source: https://firebase.google.com/docs/cloud-messaging/migrate-v1)
 
+### What happened to `senderId`?
+
+The old Legacy FCM subscribe flow accepted only a numeric `senderId` (also called the Firebase Cloud Messaging sender ID). Google removed that endpoint, so a sender ID alone is no longer enough.
+
+Use the Firebase **web app** configuration for the project you want to receive from:
+
+| Old (`electron-push-receiver`) | New (`firebase-electron`) |
+| --- | --- |
+| `senderId` | `projectId` + `apiKey` + `appId` (+ optional `vapidKey`) |
+
+The numeric sender ID still appears inside `appId` as `1:<senderId>:web:<hash>`, but you must pass the full web config, not just that number.
+
+### Third-party / multiple senders
+
+To receive pushes from another Firebase project (a "third-party sender"), you need that project's web credentials (`appId`, `apiKey`, `projectId`, optional `vapidKey`). Register once per project and listen to each credential set:
+
+```typescript
+import { registerMany, listenMany } from 'firebase-electron';
+
+const projects = [
+  { appId: myAppId, apiKey: myApiKey, projectId: myProjectId, vapidKey: myVapidKey },
+  { appId: partnerAppId, apiKey: partnerApiKey, projectId: partnerProjectId, vapidKey: partnerVapidKey },
+];
+
+const credentialsList = await registerMany(projects);
+
+// Store each credentials object (and later each persistentIds list) separately
+await listenMany(
+  credentialsList.map((credentials) => ({ ...credentials, persistentIds: [] })),
+  ({ notification }) => {
+    // handle notification from any registered project
+  },
+);
+```
+
+The Electron helper (`setup` / `START_NOTIFICATION_SERVICE`) manages a single Firebase project. For multiple senders, use the core `register` / `listen` (or `registerMany` / `listenMany`) APIs above and persist credentials yourself.
+
 ## Development
 
 1. Make sure you have the right Node.js version installed (specified in `.nvmrc` file)
