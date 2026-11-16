@@ -1,0 +1,277 @@
+{
+  "options": {
+    "optimize_for": "LITE_RUNTIME"
+  },
+  "nested": {
+    "checkin_proto": {
+      "nested": {
+        "GservicesSetting": {
+          "edition": "proto2",
+          "fields": {
+            "name": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "value": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "AndroidCheckinRequest": {
+          "edition": "proto2",
+          "fields": {
+            "imei": {
+              "type": "string",
+              "id": 1
+            },
+            "meid": {
+              "type": "string",
+              "id": 10
+            },
+            "macAddr": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 9,
+              "protoName": "mac_addr"
+            },
+            "macAddrType": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 19,
+              "protoName": "mac_addr_type"
+            },
+            "serialNumber": {
+              "type": "string",
+              "id": 16,
+              "protoName": "serial_number"
+            },
+            "esn": {
+              "type": "string",
+              "id": 17
+            },
+            "id": {
+              "type": "int64",
+              "id": 2
+            },
+            "loggingId": {
+              "type": "int64",
+              "id": 7,
+              "protoName": "logging_id"
+            },
+            "digest": {
+              "type": "string",
+              "id": 3
+            },
+            "locale": {
+              "type": "string",
+              "id": 6
+            },
+            "checkin": {
+              "rule": "required",
+              "type": "AndroidCheckinProto",
+              "id": 4
+            },
+            "desiredBuild": {
+              "type": "string",
+              "id": 5,
+              "protoName": "desired_build"
+            },
+            "marketCheckin": {
+              "type": "string",
+              "id": 8,
+              "protoName": "market_checkin"
+            },
+            "accountCookie": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 11,
+              "protoName": "account_cookie"
+            },
+            "timeZone": {
+              "type": "string",
+              "id": 12,
+              "protoName": "time_zone"
+            },
+            "securityToken": {
+              "type": "fixed64",
+              "id": 13,
+              "protoName": "security_token"
+            },
+            "version": {
+              "type": "int32",
+              "id": 14
+            },
+            "otaCert": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 15,
+              "protoName": "ota_cert"
+            },
+            "fragment": {
+              "type": "int32",
+              "id": 20
+            },
+            "userName": {
+              "type": "string",
+              "id": 21,
+              "protoName": "user_name"
+            },
+            "userSerialNumber": {
+              "type": "int32",
+              "id": 22,
+              "protoName": "user_serial_number"
+            }
+          }
+        },
+        "AndroidCheckinResponse": {
+          "edition": "proto2",
+          "fields": {
+            "statsOk": {
+              "rule": "required",
+              "type": "bool",
+              "id": 1,
+              "protoName": "stats_ok"
+            },
+            "timeMsec": {
+              "type": "int64",
+              "id": 3,
+              "protoName": "time_msec"
+            },
+            "digest": {
+              "type": "string",
+              "id": 4
+            },
+            "settingsDiff": {
+              "type": "bool",
+              "id": 9,
+              "protoName": "settings_diff"
+            },
+            "deleteSetting": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 10,
+              "protoName": "delete_setting"
+            },
+            "setting": {
+              "rule": "repeated",
+              "type": "GservicesSetting",
+              "id": 5
+            },
+            "marketOk": {
+              "type": "bool",
+              "id": 6,
+              "protoName": "market_ok"
+            },
+            "androidId": {
+              "type": "fixed64",
+              "id": 7,
+              "protoName": "android_id"
+            },
+            "securityToken": {
+              "type": "fixed64",
+              "id": 8,
+              "protoName": "security_token"
+            },
+            "versionInfo": {
+              "type": "string",
+              "id": 11,
+              "protoName": "version_info"
+            }
+          }
+        },
+        "ChromeBuildProto": {
+          "edition": "proto2",
+          "fields": {
+            "platform": {
+              "type": "Platform",
+              "id": 1
+            },
+            "chromeVersion": {
+              "type": "string",
+              "id": 2,
+              "protoName": "chrome_version"
+            },
+            "channel": {
+              "type": "Channel",
+              "id": 3
+            }
+          },
+          "nested": {
+            "Platform": {
+              "values": {
+                "PLATFORM_WIN": 1,
+                "PLATFORM_MAC": 2,
+                "PLATFORM_LINUX": 3,
+                "PLATFORM_CROS": 4,
+                "PLATFORM_IOS": 5,
+                "PLATFORM_ANDROID": 6
+              }
+            },
+            "Channel": {
+              "values": {
+                "CHANNEL_STABLE": 1,
+                "CHANNEL_BETA": 2,
+                "CHANNEL_DEV": 3,
+                "CHANNEL_CANARY": 4,
+                "CHANNEL_UNKNOWN": 5
+              }
+            }
+          }
+        },
+        "AndroidCheckinProto": {
+          "edition": "proto2",
+          "fields": {
+            "lastCheckinMsec": {
+              "type": "int64",
+              "id": 2,
+              "protoName": "last_checkin_msec"
+            },
+            "cellOperator": {
+              "type": "string",
+              "id": 6,
+              "protoName": "cell_operator"
+            },
+            "simOperator": {
+              "type": "string",
+              "id": 7,
+              "protoName": "sim_operator"
+            },
+            "roaming": {
+              "type": "string",
+              "id": 8
+            },
+            "userNumber": {
+              "type": "int32",
+              "id": 9,
+              "protoName": "user_number"
+            },
+            "type": {
+              "type": "DeviceType",
+              "id": 12,
+              "options": {
+                "default": "DEVICE_ANDROID_OS"
+              }
+            },
+            "chromeBuild": {
+              "type": "checkin_proto.ChromeBuildProto",
+              "id": 13,
+              "protoName": "chrome_build"
+            }
+          }
+        },
+        "DeviceType": {
+          "edition": "proto2",
+          "values": {
+            "DEVICE_ANDROID_OS": 1,
+            "DEVICE_IOS_OS": 2,
+            "DEVICE_CHROME_BROWSER": 3,
+            "DEVICE_CHROME_OS": 4
+          }
+        }
+      }
+    }
+  }
+}

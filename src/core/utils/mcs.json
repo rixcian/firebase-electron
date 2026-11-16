@@ -1,0 +1,558 @@
+{
+  "options": {
+    "optimize_for": "LITE_RUNTIME"
+  },
+  "nested": {
+    "mcs_proto": {
+      "nested": {
+        "HeartbeatPing": {
+          "edition": "proto2",
+          "fields": {
+            "streamId": {
+              "type": "int32",
+              "id": 1,
+              "protoName": "stream_id"
+            },
+            "lastStreamIdReceived": {
+              "type": "int32",
+              "id": 2,
+              "protoName": "last_stream_id_received"
+            },
+            "status": {
+              "type": "int64",
+              "id": 3
+            }
+          }
+        },
+        "HeartbeatAck": {
+          "edition": "proto2",
+          "fields": {
+            "streamId": {
+              "type": "int32",
+              "id": 1,
+              "protoName": "stream_id"
+            },
+            "lastStreamIdReceived": {
+              "type": "int32",
+              "id": 2,
+              "protoName": "last_stream_id_received"
+            },
+            "status": {
+              "type": "int64",
+              "id": 3
+            }
+          }
+        },
+        "ErrorInfo": {
+          "edition": "proto2",
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "message": {
+              "type": "string",
+              "id": 2
+            },
+            "type": {
+              "type": "string",
+              "id": 3
+            },
+            "extension": {
+              "type": "Extension",
+              "id": 4
+            }
+          }
+        },
+        "Setting": {
+          "edition": "proto2",
+          "fields": {
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "value": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "HeartbeatStat": {
+          "edition": "proto2",
+          "fields": {
+            "ip": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "timeout": {
+              "rule": "required",
+              "type": "bool",
+              "id": 2
+            },
+            "intervalMs": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3,
+              "protoName": "interval_ms"
+            }
+          }
+        },
+        "HeartbeatConfig": {
+          "edition": "proto2",
+          "fields": {
+            "uploadStat": {
+              "type": "bool",
+              "id": 1,
+              "protoName": "upload_stat"
+            },
+            "ip": {
+              "type": "string",
+              "id": 2
+            },
+            "intervalMs": {
+              "type": "int32",
+              "id": 3,
+              "protoName": "interval_ms"
+            }
+          }
+        },
+        "ClientEvent": {
+          "edition": "proto2",
+          "fields": {
+            "type": {
+              "type": "Type",
+              "id": 1
+            },
+            "numberDiscardedEvents": {
+              "type": "uint32",
+              "id": 100,
+              "protoName": "number_discarded_events"
+            },
+            "networkType": {
+              "type": "int32",
+              "id": 200,
+              "protoName": "network_type"
+            },
+            "timeConnectionStartedMs": {
+              "type": "uint64",
+              "id": 202,
+              "protoName": "time_connection_started_ms"
+            },
+            "timeConnectionEndedMs": {
+              "type": "uint64",
+              "id": 203,
+              "protoName": "time_connection_ended_ms"
+            },
+            "errorCode": {
+              "type": "int32",
+              "id": 204,
+              "protoName": "error_code"
+            },
+            "timeConnectionEstablishedMs": {
+              "type": "uint64",
+              "id": 300,
+              "protoName": "time_connection_established_ms"
+            }
+          },
+          "reserved": [
+            [
+              201,
+              201
+            ]
+          ],
+          "nested": {
+            "Type": {
+              "values": {
+                "UNKNOWN": 0,
+                "DISCARDED_EVENTS": 1,
+                "FAILED_CONNECTION": 2,
+                "SUCCESSFUL_CONNECTION": 3
+              }
+            }
+          }
+        },
+        "LoginRequest": {
+          "edition": "proto2",
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "domain": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "user": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "resource": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "authToken": {
+              "rule": "required",
+              "type": "string",
+              "id": 5,
+              "protoName": "auth_token"
+            },
+            "deviceId": {
+              "type": "string",
+              "id": 6,
+              "protoName": "device_id"
+            },
+            "lastRmqId": {
+              "type": "int64",
+              "id": 7,
+              "protoName": "last_rmq_id"
+            },
+            "setting": {
+              "rule": "repeated",
+              "type": "Setting",
+              "id": 8
+            },
+            "receivedPersistentId": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 10,
+              "protoName": "received_persistent_id"
+            },
+            "adaptiveHeartbeat": {
+              "type": "bool",
+              "id": 12,
+              "protoName": "adaptive_heartbeat"
+            },
+            "heartbeatStat": {
+              "type": "HeartbeatStat",
+              "id": 13,
+              "protoName": "heartbeat_stat"
+            },
+            "useRmq2": {
+              "type": "bool",
+              "id": 14,
+              "protoName": "use_rmq2"
+            },
+            "accountId": {
+              "type": "int64",
+              "id": 15,
+              "protoName": "account_id"
+            },
+            "authService": {
+              "type": "AuthService",
+              "id": 16,
+              "protoName": "auth_service"
+            },
+            "networkType": {
+              "type": "int32",
+              "id": 17,
+              "protoName": "network_type"
+            },
+            "status": {
+              "type": "int64",
+              "id": 18
+            },
+            "clientEvent": {
+              "rule": "repeated",
+              "type": "ClientEvent",
+              "id": 22,
+              "protoName": "client_event"
+            }
+          },
+          "reserved": [
+            [
+              19,
+              19
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              21,
+              21
+            ]
+          ],
+          "nested": {
+            "AuthService": {
+              "values": {
+                "ANDROID_ID": 2
+              }
+            }
+          }
+        },
+        "LoginResponse": {
+          "edition": "proto2",
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "jid": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrorInfo",
+              "id": 3
+            },
+            "setting": {
+              "rule": "repeated",
+              "type": "Setting",
+              "id": 4
+            },
+            "streamId": {
+              "type": "int32",
+              "id": 5,
+              "protoName": "stream_id"
+            },
+            "lastStreamIdReceived": {
+              "type": "int32",
+              "id": 6,
+              "protoName": "last_stream_id_received"
+            },
+            "heartbeatConfig": {
+              "type": "HeartbeatConfig",
+              "id": 7,
+              "protoName": "heartbeat_config"
+            },
+            "serverTimestamp": {
+              "type": "int64",
+              "id": 8,
+              "protoName": "server_timestamp"
+            }
+          }
+        },
+        "StreamErrorStanza": {
+          "edition": "proto2",
+          "fields": {
+            "type": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "text": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "Close": {
+          "edition": "proto2",
+          "fields": {}
+        },
+        "Extension": {
+          "edition": "proto2",
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "data": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "IqStanza": {
+          "edition": "proto2",
+          "fields": {
+            "rmqId": {
+              "type": "int64",
+              "id": 1,
+              "protoName": "rmq_id"
+            },
+            "type": {
+              "rule": "required",
+              "type": "IqType",
+              "id": 2
+            },
+            "id": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "from": {
+              "type": "string",
+              "id": 4
+            },
+            "to": {
+              "type": "string",
+              "id": 5
+            },
+            "error": {
+              "type": "ErrorInfo",
+              "id": 6
+            },
+            "extension": {
+              "type": "Extension",
+              "id": 7
+            },
+            "persistentId": {
+              "type": "string",
+              "id": 8,
+              "protoName": "persistent_id"
+            },
+            "streamId": {
+              "type": "int32",
+              "id": 9,
+              "protoName": "stream_id"
+            },
+            "lastStreamIdReceived": {
+              "type": "int32",
+              "id": 10,
+              "protoName": "last_stream_id_received"
+            },
+            "accountId": {
+              "type": "int64",
+              "id": 11,
+              "protoName": "account_id"
+            },
+            "status": {
+              "type": "int64",
+              "id": 12
+            }
+          },
+          "nested": {
+            "IqType": {
+              "values": {
+                "GET": 0,
+                "SET": 1,
+                "RESULT": 2,
+                "IQ_ERROR": 3
+              }
+            }
+          }
+        },
+        "AppData": {
+          "edition": "proto2",
+          "fields": {
+            "key": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "value": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "DataMessageStanza": {
+          "edition": "proto2",
+          "fields": {
+            "id": {
+              "type": "string",
+              "id": 2
+            },
+            "from": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "to": {
+              "type": "string",
+              "id": 4
+            },
+            "category": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "token": {
+              "type": "string",
+              "id": 6
+            },
+            "appData": {
+              "rule": "repeated",
+              "type": "AppData",
+              "id": 7,
+              "protoName": "app_data"
+            },
+            "fromTrustedServer": {
+              "type": "bool",
+              "id": 8,
+              "protoName": "from_trusted_server"
+            },
+            "persistentId": {
+              "type": "string",
+              "id": 9,
+              "protoName": "persistent_id"
+            },
+            "streamId": {
+              "type": "int32",
+              "id": 10,
+              "protoName": "stream_id"
+            },
+            "lastStreamIdReceived": {
+              "type": "int32",
+              "id": 11,
+              "protoName": "last_stream_id_received"
+            },
+            "regId": {
+              "type": "string",
+              "id": 13,
+              "protoName": "reg_id"
+            },
+            "deviceUserId": {
+              "type": "int64",
+              "id": 16,
+              "protoName": "device_user_id"
+            },
+            "ttl": {
+              "type": "int32",
+              "id": 17
+            },
+            "sent": {
+              "type": "int64",
+              "id": 18
+            },
+            "queued": {
+              "type": "int32",
+              "id": 19
+            },
+            "status": {
+              "type": "int64",
+              "id": 20
+            },
+            "rawData": {
+              "type": "bytes",
+              "id": 21,
+              "protoName": "raw_data"
+            },
+            "immediateAck": {
+              "type": "bool",
+              "id": 24,
+              "protoName": "immediate_ack"
+            }
+          }
+        },
+        "StreamAck": {
+          "edition": "proto2",
+          "fields": {}
+        },
+        "SelectiveAck": {
+          "edition": "proto2",
+          "fields": {
+            "id": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

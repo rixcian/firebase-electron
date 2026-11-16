@@ -71,6 +71,10 @@ window.ipc.send(START_NOTIFICATION_SERVICE, { appId, apiKey, projectId, vapidKey
 9. (Optional) Copy the `vapidKey` listed under the `Cloud Messaging` tab and `Web Configuration > Web Push certificates` section
 10. (Optional) Generate a new `key pair` and use the value in the `Key pair` column as your `vapidKey`
 
+## Webpack / Electron Forge
+
+Protobuf definitions are embedded in the compiled JS bundle, so you do **not** need to copy `.proto` files with `CopyWebpackPlugin` or similar. If you previously added copy rules for `checkin.proto` / `mcs.proto`, you can remove them.
+
 ## Moving from `electron-push-receiver`
 
 [`electron-push-receiver`](https://github.com/MatthieuLemoine/electron-push-receiver) library stopped working because it depends on the [Legacy FCM API](https://firebase.google.com/docs/cloud-messaging/migrate-v1) which was deprecated on June 21st, 2024 by Google.

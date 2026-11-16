@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-import path from 'path';
 import protobuf from 'protobufjs';
 import {
   ProcessingState,
@@ -9,6 +8,8 @@ import {
   kMCSVersion,
   MCSProtoTag,
 } from './constants.js';
+import { loadProtoJson } from './load-proto.js';
+import mcsDescriptor from './mcs.json';
 
 const DEBUG_ENABLED = false;
 const DEBUG = DEBUG_ENABLED ? console.log : (log: string): void => {};
@@ -39,7 +40,7 @@ export default class Parser extends EventEmitter {
     if (proto) {
       return;
     }
-    proto = await protobuf.load(path.resolve(__dirname, 'mcs.proto'));
+    proto = loadProtoJson(mcsDescriptor);
   }
 
   constructor(socket: any) {
