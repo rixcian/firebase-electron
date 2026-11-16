@@ -22,12 +22,19 @@ export function decrypt(object: DecryptObject, keys: DecryptKeys): any {
   const dh = crypto.createECDH('prime256v1');
   dh.setPrivateKey(keys.privateKey, 'base64');
 
+  // NOTE: FCM may send crypto-key as either "dh=..." or "dh=...;p256ecdsa=..."
+  const cryptoKeyMatch = cryptoKey.value.match(/dh=([^;]+)/);
+  if (!cryptoKeyMatch?.[1]) throw new Error('dh parameter is missing from crypto-key');
+
+  const saltMatch = salt.value.match(/salt=([^;]+)/);
+  if (!saltMatch?.[1]) throw new Error('salt parameter is missing from encryption');
+
   const params = {
     version: 'aesgcm',
     authSecret: keys.authSecret,
-    dh: cryptoKey.value.slice(3),
+    dh: cryptoKeyMatch[1],
     privateKey: dh,
-    salt: salt.value.slice(5),
+    salt: saltMatch[1],
   };
   const decrypted = ece.decrypt(object.rawData, params);
 
