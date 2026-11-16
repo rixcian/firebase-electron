@@ -1,6 +1,7 @@
 import { EVENTS } from './events.d.js';
 import { Client } from './client.js';
 import type { Credentials } from './client.js';
+import type { TlsConfig } from './utils/tls-options.js';
 
 export interface Notification {
   title: string;
@@ -17,11 +18,20 @@ export interface NotificationCallbackParams {
   persistentId: string;
 }
 
+export interface ListenOptions {
+  tls?: TlsConfig;
+}
+
 export async function listen(
   credentials: CredentialsWithPersistentIds,
   notificationCallback: (params: NotificationCallbackParams) => void,
+  options: ListenOptions = {},
 ): Promise<Client> {
-  const client: Client = new Client({ gcm: credentials.gcm, keys: credentials.keys }, credentials.persistentIds);
+  const client: Client = new Client(
+    { gcm: credentials.gcm, keys: credentials.keys },
+    credentials.persistentIds,
+    options.tls,
+  );
 
   // Listen for notifications
   client.on(EVENTS.ON_NOTIFICATION_RECEIVED, notificationCallback);

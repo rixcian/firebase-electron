@@ -5,6 +5,7 @@ import request from 'request-promise';
 
 import fcmKey from '../fcm/server-key.js';
 import { toBase64 } from '../utils/base64.js';
+import { toRequestTlsOptions, type TlsConfig } from '../utils/tls-options.js';
 import { waitFor } from '../utils/timeout.js';
 
 // Hack to fix PHONE_REGISTRATION_ERROR #17 when bundled with webpack
@@ -30,14 +31,18 @@ export interface GCMRegistrationResult extends CheckInOptions {
   appId: string;
 }
 
-export async function registerGCM(appId: string): Promise<GCMRegistrationResult> {
-  const options = await checkIn();
-  const credentials = await doRegister(options, appId);
+export async function registerGCM(appId: string, tls?: TlsConfig): Promise<GCMRegistrationResult> {
+  const options = await checkIn(undefined, undefined, tls);
+  const credentials = await doRegister(options, appId, tls);
 
   return credentials;
 }
 
-export async function checkIn(androidId?: string, securityToken?: string): Promise<CheckInOptions> {
+export async function checkIn(
+  androidId?: string,
+  securityToken?: string,
+  tls?: TlsConfig,
+): Promise<CheckInOptions> {
   await loadProtoFile();
 
   const buffer = getCheckinRequest(androidId, securityToken);
@@ -50,6 +55,7 @@ export async function checkIn(androidId?: string, securityToken?: string): Promi
     },
     body: buffer,
     encoding: null,
+    ...toRequestTlsOptions(tls),
   });
 
   const message = AndroidCheckinResponse.decode(body);
@@ -63,7 +69,11 @@ export async function checkIn(androidId?: string, securityToken?: string): Promi
   return object;
 }
 
-async function doRegister({ androidId, securityToken }: CheckInOptions, appId: string): Promise<GCMRegistrationResult> {
+async function doRegister(
+  { androidId, securityToken }: CheckInOptions,
+  appId: string,
+  tls?: TlsConfig,
+): Promise<GCMRegistrationResult> {
   const body = {
     app: 'org.chromium.linux',
     'X-subtype': appId,
@@ -71,7 +81,7 @@ async function doRegister({ androidId, securityToken }: CheckInOptions, appId: s
     sender: serverKey,
   };
 
-  const response = await postRegister({ androidId, securityToken, body });
+  const response = await postRegister({ androidId, securityToken, body, tls });
   const token = response.split('=')[1]!;
 
   return {
@@ -87,9 +97,16 @@ interface PostRegisterOptions {
   securityToken: string;
   body: Record<string, string>;
   retry?: number;
+  tls?: TlsConfig;
 }
 
-async function postRegister({ androidId, securityToken, body, retry = 0 }: PostRegisterOptions): Promise<string> {
+async function postRegister({
+  androidId,
+  securityToken,
+  body,
+  retry = 0,
+  tls,
+}: PostRegisterOptions): Promise<string> {
   const response = await request({
     url: REGISTER_URL,
     method: 'POST',
@@ -98,6 +115,7 @@ async function postRegister({ androidId, securityToken, body, retry = 0 }: PostR
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     form: body,
+    ...toRequestTlsOptions(tls),
   });
 
   if (response.includes('Error')) {
@@ -108,7 +126,7 @@ async function postRegister({ androidId, securityToken, body, retry = 0 }: PostR
 
     await waitFor(1000);
 
-    return postRegister({ androidId, securityToken, body, retry: retry + 1 });
+    return postRegister({ androidId, securityToken, body, retry: retry + 1, tls });
   }
 
   return response;

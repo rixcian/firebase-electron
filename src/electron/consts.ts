@@ -1,6 +1,9 @@
 // Event to be sent from renderer process to trigger service start
 export const START_NOTIFICATION_SERVICE = 'PUSH_RECEIVER:::START_NOTIFICATION_SERVICE';
 
+// Event to be sent from renderer process to clear stored FCM credentials and force re-registration
+export const RESET_NOTIFICATION_SERVICE = 'PUSH_RECEIVER:::RESET_NOTIFICATION_SERVICE';
+
 // Event sent to the renderer process once the service is up
 export const NOTIFICATION_SERVICE_STARTED = 'PUSH_RECEIVER:::NOTIFICATION_SERVICE_STARTED';
 
@@ -12,3 +15,6 @@ export const NOTIFICATION_RECEIVED = 'PUSH_RECEIVER:::NOTIFICATION_RECEIVED';
 
 // Event sent to the renderer process when the FCM token has been updated
 export const TOKEN_UPDATED = 'PUSH_RECEIVER:::TOKEN_UPDATED';
+
+// Event sent to the renderer process after stored credentials were cleared
+export const NOTIFICATION_SERVICE_RESET = 'PUSH_RECEIVER:::NOTIFICATION_SERVICE_RESET';

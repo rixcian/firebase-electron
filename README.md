@@ -27,8 +27,10 @@ setupPushReceiver(mainWindow.webContents);
 import { ipcRenderer } from 'electron';
 import {
   START_NOTIFICATION_SERVICE,
+  RESET_NOTIFICATION_SERVICE,
   NOTIFICATION_SERVICE_STARTED,
   NOTIFICATION_SERVICE_ERROR,
+  NOTIFICATION_SERVICE_RESET,
   NOTIFICATION_RECEIVED,
   TOKEN_UPDATED,
 } from 'firebase-electron/dist/electron/consts';
@@ -40,6 +42,9 @@ ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
 // Handle notification errors
 ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
   // do something
+});
+ipcRenderer.on(NOTIFICATION_SERVICE_RESET, () => {
+  // credentials cleared; you can start the service again
 });
 // Send FCM token to backend
 ipcRenderer.on(TOKEN_UPDATED, (_, token) => {
@@ -53,7 +58,38 @@ ipcRenderer.on(NOTIFICATION_RECEIVED, (_, notification) => {
 ipcRenderer.send(START_NOTIFICATION_SERVICE, { appId, apiKey, projectId, vapidKey });
 // or
 window.ipc.send(START_NOTIFICATION_SERVICE, { appId, apiKey, projectId, vapidKey });
+
+// Clear stored credentials to force a fresh registration (useful when debugging proxy/TLS issues)
+ipcRenderer.send(RESET_NOTIFICATION_SERVICE);
 ```
+
+### Corporate / MITM proxy TLS
+
+Node.js does not always trust the same system root certificates as Chromium. If registration fails with `self signed certificate in certificate chain`, provide the proxy root CA (or temporarily disable verification for local debugging):
+
+```typescript
+ipcRenderer.send(START_NOTIFICATION_SERVICE, {
+  appId,
+  apiKey,
+  projectId,
+  vapidKey,
+  tls: {
+    ca: fs.readFileSync('/path/to/proxy-root-ca.pem'),
+    // NOTE: prefer providing `ca` over disabling verification
+    // rejectUnauthorized: false,
+  },
+});
+```
+
+You can also pass the same `tls` option to `register()` / `listen()` when using the core API directly.
+
+Also make sure these hosts are reachable on port `443` (registration) and `5228` (MCS push socket):
+
+- `android.clients.google.com`
+- `firebaseinstallations.googleapis.com`
+- `fcmregistrations.googleapis.com`
+- `fcm.googleapis.com`
+- `mtalk.google.com`
 
 ### Where to find `appId`, `apiKey`, `projectId` and `vapidKey`
 

@@ -3,16 +3,23 @@ import ElectronStore from 'electron-config';
 
 import { listen } from '../core/listen.js';
 import { register, type FirebaseCredentials } from '../core/register.js';
+import type { TlsConfig } from '../core/utils/tls-options.js';
 
 import {
   NOTIFICATION_RECEIVED,
   NOTIFICATION_SERVICE_ERROR,
+  NOTIFICATION_SERVICE_RESET,
   NOTIFICATION_SERVICE_STARTED,
+  RESET_NOTIFICATION_SERVICE,
   START_NOTIFICATION_SERVICE,
   TOKEN_UPDATED,
 } from './consts.js';
 
 const config = new ElectronStore();
+
+export interface StartNotificationServicePayload extends FirebaseCredentials {
+  tls?: TlsConfig;
+}
 
 // To be sure that start is called only once
 let started = false;
@@ -20,7 +27,8 @@ let started = false;
 // To be called from the main process
 function setup(webContents: WebContents): void {
   // Will be called by the renderer process
-  ipcMain.on(START_NOTIFICATION_SERVICE, async (_, firebaseCredentials: FirebaseCredentials) => {
+  ipcMain.on(START_NOTIFICATION_SERVICE, async (_, payload: StartNotificationServicePayload) => {
+    const { tls, ...firebaseCredentials } = payload;
     // Retrieve saved credentials
     let credentials: any = config.get('credentials');
     // Retrieve saved senderId
@@ -44,7 +52,7 @@ function setup(webContents: WebContents): void {
         savedFirebaseCredentials.projectId !== firebaseCredentials.projectId ||
         savedFirebaseCredentials.vapidKey !== firebaseCredentials.vapidKey
       ) {
-        credentials = await register(firebaseCredentials);
+        credentials = await register(firebaseCredentials, { tls });
         // Save credentials for later use
         config.set('credentials', credentials);
         // Save senderId
@@ -53,14 +61,23 @@ function setup(webContents: WebContents): void {
         webContents.send(TOKEN_UPDATED, credentials.fcm.token);
       }
       // Listen for GCM/FCM notifications
-      await listen({ ...credentials, persistentIds }, onNotification(webContents));
+      await listen({ ...credentials, persistentIds }, onNotification(webContents), { tls });
       // Notify the renderer process that we are listening for notifications
       webContents.send(NOTIFICATION_SERVICE_STARTED, credentials.fcm.token);
     } catch (e) {
       console.error('PUSH_RECEIVER:::Error while starting the service', e);
+      started = false;
       // Forward error to the renderer process
       webContents.send(NOTIFICATION_SERVICE_ERROR, (e as Error).message);
     }
+  });
+
+  ipcMain.on(RESET_NOTIFICATION_SERVICE, () => {
+    config.delete('credentials');
+    config.delete('firebaseCredentials');
+    config.delete('persistentIds');
+    started = false;
+    webContents.send(NOTIFICATION_SERVICE_RESET);
   });
 }
 
@@ -81,7 +98,9 @@ function onNotification(webContents: WebContents) {
 export {
   NOTIFICATION_RECEIVED,
   NOTIFICATION_SERVICE_ERROR,
+  NOTIFICATION_SERVICE_RESET,
   NOTIFICATION_SERVICE_STARTED,
+  RESET_NOTIFICATION_SERVICE,
   START_NOTIFICATION_SERVICE,
   TOKEN_UPDATED,
   setup,
